@@ -490,7 +490,7 @@ This exercise will involve creating three stages (or items) in our pipeline, eac
 
 #### 3a - Build
 
-1. In the previous lab, if you deleted and re-created the three namespaces (*-ci-cd, *-dev and *-test), the Jenkins NPM slave image streams are no longer available. Run the following to re-label the Jenkins NPM slave image streams. Windows users should run these commands from inside the `do500-toolbox` container.
+1-Needed. In the previous lab, if you deleted and re-created the three namespaces (*-ci-cd, *-dev and *-test), the Jenkins NPM slave image streams are no longer available. Run the following to re-label the Jenkins NPM slave image streams. Windows users should run these commands from inside the `do500-toolbox` container.
 
 ```bash
 oc project <YOUR_NAME>-ci-cd
@@ -632,7 +632,7 @@ oc rollout latest dc/${NAME}
 
 4. Delete the Post Build Action to trigger another job (by hitting the red X). Save the configuration. We're almost ready to run the pipeline!
 
-5. Since we are using self-signed certificates for the Git server instance in the lab, you need to set some global environment variables in the Jenkins configuration to bypass SSL certificate verification and git client configuration
+5-Needed. Since we are using self-signed certificates for the Git server instance in the lab, you need to set some global environment variables in the Jenkins configuration to bypass SSL certificate verification and git client configuration
     * From the Jenkins main page, navigate to `Manage Jenkins` > `Configure System` and then scroll down to the `Git plugin` section and add your username and email as follows:
 
     ![jenkins-git-client-config](../images/exercise2/jenkins-git-client-config.png)
@@ -645,16 +645,16 @@ oc rollout latest dc/${NAME}
 
 #### 3d - Pipeline
 
-1. With our Jenkins setup in place; now move to our `todolist-fe` app's source code. We have to add our configuration to the frontend to tell it where the API layer will be hosted. Open the source in your favourite editor and navigate to `src/config/dev.js`.
+1-Needed. With our Jenkins setup in place; now move to our `todolist-fe` app's source code. We have to add our configuration to the frontend to tell it where the API layer will be hosted. Open the source in your favourite editor and navigate to `src/config/dev.js`.
 
-2. Update `<YOUR_NAME>` accordingly with the route where the Todo List API will live when it is deployed. The correct full URL can also be found on the OpenShift Console; if you copy it from there remember to append `/api/todos` to the URL. For example:
+2-Needed. Update `<YOUR_NAME>` accordingly with the route where the Todo List API will live when it is deployed. The correct full URL can also be found on the OpenShift Console; if you copy it from there remember to append `/api/todos` to the URL. For example:
 ![fe-dev-config](../images/exercise2/fe-dev-config.png)
 
-3. Repeat this for `src/config/test.js` file. If you copy the URL from the previous step; change `dev` to `test`.
+3-Needed. Repeat this for `src/config/test.js` file. If you copy the URL from the previous step; change `dev` to `test`.
 For example:
 ![fe-test-config](../images/exercise2/fe-test-config.png)
 
-4. With the config in place; commit your changes and push them to GitLab:
+4-Needed. With the config in place; commit your changes and push them to GitLab:
 ```bash
 git add .
 ```
