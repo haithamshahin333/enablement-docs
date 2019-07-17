@@ -129,26 +129,6 @@ npm run test
 "test": "node_modules/.bin/nyc node_modules/.bin/mocha server/**/*.spec.js --exit"
 ```
 
-5. Navigate to your instance of Jenkins at `https://jenkins-<YOUR_NAME>-ci-cd.<APPS_URL>`.
-Click on `dev-todolist-fe-build` and then click the `configure` button on the left-hand side.
-
-![jenkins-configure-job](../images/exercise3/jenkins-configure-job.png)
-
-6. Scroll to the `Build` part of the configuration page and add `npm run test` below `npm install`.
-
-![jenkins-build-step](../images/exercise3/jenkins-build-step.png)
-
-7. Scroll to the `Post-build Actions` section and click `Add post-build action`. Select `Publish xUnit test result report` (Jenkins might place this at the top of the `Post-build Actions` list).
-
-![xunit-action](../images/exercise3/xunit-action.png)
-
-8. Click the `Add` button under `Publish xUnit test result report` and select `JUnit`. In the pattern field enter `test-report.xml`. In the `Failed Tests Thresholds`  input box enter 0 under `Red Ball Total`. It should look a little something like this:
-
-![post-build-actions](../images/exercise3/post-build-actions.png)
-
-9. Click `Save` at the bottom to save the changes. Run the `dev-todolist-fe-build` job and verify that this passes and the `build` and `bake` jobs are both triggered.
-
-
 #### 1b - End to End Tests (e2e)
 > _Unit tests are a great way to get immediate feedback as part of testing an application. End to end tests that drive user behaviour are another amazing way to ensure an application is behaving as expected._
 
@@ -167,37 +147,6 @@ npm run e2e
 ![local-e2e](../images/exercise3/local-e2e.png)
 
 > NOTE: On Windows systems, you will see the firewall pop-up and ask permission to allow access. Click allow access to continue.
-
-
-3. With tests executing locally; let's add them to our Jenkins pipeline. To do this; we'll create a new job and connect it up to our `todolist-fe` jobs. Open Jenkins and create a `New Item` called `dev-todolist-fe-e2e`. Make this Job `Freestyle`.
-
-4. On the configuration page (under the general tab); Set the Label for the job to run on as `jenkins-slave-npm`. Check the box marking the build parameterised and add a String parameter of `BUILD_TAG` as done before
-
-![e2e-general](../images/exercise3/e2e-general.png)
-
-5. On the Source Code Management tab; set the source code to git and add the url to your `todolist-fe` app. Set the branch to `refs/tags/${BUILD_TAG}`
-
-![e2e-git](../images/exercise3/e2e-git.png)
-
-6. Set `Color ANSI Console Output` on the `Build Environment` section
-
-7. On the Build section; add a build step to execute shell and fill in the following substituting `<YOUR_NAME>` accordingly:
-```bash
-export E2E_TEST_ROUTE=todolist-fe-<YOUR_NAME>-dev.<APPS_URL>
-npm install
-npm run e2e:ci
-```
-![e2e-steps](../images/exercise3/e2e-steps.png)
-
-8. Add a Post Build action to `Publish Junit test result report`. Add `reports/e2e/specs/*.xml` to the report location and save the configuration to be brought back to the Job's homepage.
-
-![e2e-post-build](../images/exercise3/e2e-post-build.png)
-
-9. We want to connect the e2e job we just created to our dev pipleline by editing the post build actions on `dev-todolist-fe-deploy` job. Open the `dev-todolist-fe-deploy` job and hit `configure`. In the `Post-build actions` section of this job add a `Trigger parameterised build` on other jobs. Set the `Projects to build` to be `dev-todolist-fe-e2e`. Add a Parameter and set the it to the `Current build parameters`. Save the settings.
-
-![e2e-trigger](../images/exercise3/e2e-trigger.png)
-
-10. Run the pipeline from the beginning to see the e2e tests executed after deployment.
 
 ### Part 2 - TodoList new feature
 > _In this exercise we will introduce a new feature to create an important flag on the todos. In order to be able to build and test our feature we will use TDD_
